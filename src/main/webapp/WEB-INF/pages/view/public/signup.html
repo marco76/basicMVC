@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+        >
+
+<head th:include="templates/layout :: headerFragment">
+</head>
+
+<body>
+
+
+<div th:include="templates/layout :: menuFragment">
+</div>
+
+<div class="container">
+
+    <form action="#" th:action="@{/base/public/signup_confirm}" th:object="${user}" method="post">
+
+        <legend>Sign Up</legend>
+
+
+        <div  th:class="${#fields.hasErrors('username')}? 'control-group error':'control-group'">
+            <label class="control-label" for="username">Username</label>
+            <div class="controls">
+                <input type="text" th:field="*{username}" id="username"/>
+                <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="help-inline">Incorrect data</span>
+
+            </div>
+        </div>
+
+        <div th:class="${#fields.hasErrors('email')}? 'control-group error':'control-group'">
+            <label class="control-label" for="email">Email</label>
+            <div class="controls">
+                <input type="text" th:field="*{email}" id="email"/>
+                <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="help-inline">Incorrect data</span>
+
+            </div>
+        </div>
+
+        <div th:class="${#fields.hasErrors('password')}? 'control-group error':'control-group'">
+            <label class="control-label" for="password">Password</label>
+            <div class="controls">
+                <input type="password" th:field="*{password}" id="password"/>
+                <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="help-inline">Incorrect data</span>
+
+            </div>
+        </div>
+        <div th:class="${#fields.hasErrors('confirmPassword')}? 'control-group error':'control-group'">
+        <label class="control-label" for="confirmPassword">Confirm password</label>
+            <div class="controls">
+                <input type="password" th:field="*{confirmPassword}" id="confirmPassword"/>
+                <span th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}" class="help-inline">Incorrect data</span>
+
+            </div>
+        </div>
+            <input type="submit" value="Submit"/>
+       </form>
+</div>
+<div th:include="templates/layout :: footerFragment">
+
+</div>
+
+
+</body>
+
+</html>

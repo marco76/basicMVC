@@ -34,5 +34,6 @@ public class WebInitializer implements WebApplicationInitializer {
                 container.addServlet("dispatcher", new DispatcherServlet(dispatcherContext));
         dispatcher.setLoadOnStartup(1);
         dispatcher.addMapping("/");
+
     }
 }

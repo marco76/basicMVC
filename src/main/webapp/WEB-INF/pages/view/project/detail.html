@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:dt="http://github.com/dandelion/datatables"
+        >
+
+<head th:include="impl/template/layout :: headerFragment">
+</head>
+
+<body>
+
+
+<div th:include="impl/template/layout :: menuFragment">
+</div>
+<div class="container">
+    <div th:text="${project.name}">name</div>
+
+    <div>Current phase
+      <a th:href="@{/impl/phase/create}">
+          <i class="icon-plus"/>
+      </a>
+        <a th:href="@{/phase/change}">
+            <i class="icon-list"/>
+        </a>
+    </div>
+    <div>
+        <div th:text="${phase?.name}">phase</div>
+    </div>
+
+
+</div>
+<div th:include="impl/template/layout :: footerFragment">
+
+</div>
+<!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css"
+      href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css">
+    </link>
+<!-- DataTables -->
+<script type="text/javascript" charset="utf8"
+        src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
+
+</body>
+
+</html>
