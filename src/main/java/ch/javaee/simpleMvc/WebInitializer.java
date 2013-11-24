@@ -15,6 +15,7 @@ import javax.servlet.ServletRegistration;
 public class WebInitializer implements WebApplicationInitializer {
     @Override
     public void onStartup(ServletContext container) throws ServletException {
+
         // Create the 'root' Spring application context
         AnnotationConfigWebApplicationContext rootContext =
                 new AnnotationConfigWebApplicationContext();
@@ -23,7 +24,7 @@ public class WebInitializer implements WebApplicationInitializer {
         // Manage the lifecycle of the root application context
         container.addListener(new ContextLoaderListener(rootContext));
 
-        // Create the dis   patcher servlet's Spring application context
+        // Create the dispatcher servlet's Spring application context
         AnnotationConfigWebApplicationContext dispatcherContext =
                 new AnnotationConfigWebApplicationContext();
         dispatcherContext.register(DispatcherConfig.class);
@@ -34,8 +35,4 @@ public class WebInitializer implements WebApplicationInitializer {
         dispatcher.setLoadOnStartup(1);
         dispatcher.addMapping("/");
     }
-
-
-
-
 }

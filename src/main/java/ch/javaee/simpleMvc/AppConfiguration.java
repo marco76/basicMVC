@@ -13,5 +13,4 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @Import({ WebInitializer.class, DispatcherConfig.class})
 public class AppConfiguration {
 
-
 }
