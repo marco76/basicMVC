@@ -1,4 +1,4 @@
-package ch.javaee.simpleMvc.config;
+package ch.javaee.basicMvc.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;

@@ -1,4 +1,4 @@
-package ch.javaee.simpleMvc.config;
+package ch.javaee.basicMvc.config;
 
 import org.springframework.core.annotation.Order;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;

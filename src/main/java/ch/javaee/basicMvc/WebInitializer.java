@@ -1,6 +1,6 @@
-package ch.javaee.simpleMvc;
+package ch.javaee.basicMvc;
 
-import ch.javaee.simpleMvc.config.DispatcherConfig;
+import ch.javaee.basicMvc.config.DispatcherConfig;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;

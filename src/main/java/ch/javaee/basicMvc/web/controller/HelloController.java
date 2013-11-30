@@ -1,4 +1,4 @@
-package ch.javaee.simpleMvc.web.controller;
+package ch.javaee.basicMvc.web.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
