@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:include="templates/layout :: headerFragment">
+</head>
+<body>
+<div th:include="templates/layout :: menuFragment">
+</div>
+<div class="container" style="width: 300px">
+    <div class="row">
+
+        <div class="main">
+
+            <h3>Please Log In, or <a href="#">Sign Up</a></h3>
+            <div class="row">
+                <div class="col-xs-6 col-sm-6 col-md-6">
+                    <a href="#" class="btn btn-lg btn-primary btn-block">Facebook</a>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6">
+                    <a href="#" class="btn btn-lg btn-info btn-block">Google</a>
+                </div>
+            </div>
+            <div class="login-or">
+                <hr class="hr-or">
+                <span class="span-or">or</span>
+                </hr>
+            </div>
+
+            <p th:if="${loginError}">Wrong user or password</p>
+
+            <form role="form" th:action="@{/login}" method="post">
+                <div class="form-group">
+                    <label for="username">Username or email</label>
+                    <input type="text" class="form-control" id="username" name="username"/>
+                </div>
+                <div class="form-group">
+                    <a class="pull-right" href="#">Forgot password?</a>
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" name="password"/>
+                </div>
+                <div class="checkbox pull-right">
+                    <label>
+                        <input type="checkbox"/>
+                        Remember me </label>
+                </div>
+                <button type="submit" class="btn btn btn-primary">
+                    Log In
+                </button>
+            </form>
+
+        </div>
+
+    </div>
+</div>
+</body>
+</html>
