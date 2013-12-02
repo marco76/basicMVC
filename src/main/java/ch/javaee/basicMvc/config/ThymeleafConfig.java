@@ -1,5 +1,6 @@
 package ch.javaee.basicMvc.config;
 
+import com.github.dandelion.datatables.thymeleaf.dialect.DataTablesDialect;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -33,9 +34,16 @@ public class ThymeleafConfig {
     public SpringTemplateEngine templateEngine(){
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolver(templateResolver());
-        SpringSecurityDialect springSecurityDialect = new SpringSecurityDialect();
+
+        // we add some dialects to extend the functionalities of Thymeleaf
         Set<IDialect> dialects = new HashSet<>();
-        dialects.add(springSecurityDialect);
+
+        // we add the Spring Security dialect to thymeleaf
+        dialects.add(new SpringSecurityDialect());
+
+        // we add the Dandelion DataTable dialect to thymeleaf
+        dialects.add(new DataTablesDialect());
+
         templateEngine.setAdditionalDialects(dialects);
         return templateEngine;
     }

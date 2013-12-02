@@ -13,7 +13,7 @@
 
 <div class="container">
 
-    <form action="#" th:action="@{/base/public/signup_confirm}" th:object="${user}" method="post">
+    <form action="#" th:action="@{/public/signup_confirm}" th:object="${user}" method="post">
 
         <legend>Sign Up</legend>
 
@@ -45,15 +45,15 @@
             </div>
         </div>
         <div th:class="${#fields.hasErrors('confirmPassword')}? 'control-group error':'control-group'">
-        <label class="control-label" for="confirmPassword">Confirm password</label>
+            <label class="control-label" for="confirmPassword">Confirm password</label>
             <div class="controls">
                 <input type="password" th:field="*{confirmPassword}" id="confirmPassword"/>
                 <span th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}" class="help-inline">Incorrect data</span>
 
             </div>
         </div>
-            <input type="submit" value="Submit"/>
-       </form>
+        <input type="submit" value="Submit"/>
+    </form>
 </div>
 <div th:include="templates/layout :: footerFragment">
 

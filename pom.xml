@@ -5,10 +5,12 @@
     <artifactId>basicMVC</artifactId>
     <packaging>war</packaging>
     <version>0.1-SNAPSHOT</version>
-    <name>minimvc</name>
+    <name>basicMVC</name>
 
     <properties>
         <spring.version>3.2.5.RELEASE</spring.version>
+        <hibernate.version>4.1.9.Final</hibernate.version>
+        <hsqldb.version>2.2.8</hsqldb.version>
     </properties>
 
     <dependencies>
@@ -69,6 +71,61 @@
             <artifactId>spring-security-config</artifactId>
             <version>3.2.0.RC2</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.dandelion</groupId>
+            <artifactId>datatables-thymeleaf</artifactId>
+            <version>0.9.3</version>
+        </dependency>
+        <!-- Java Mail API -->
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.5</version>
+        </dependency>
+        <!-- velocity : used to template mails -->
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+            <version>1.7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>5.0.1.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>${hsqldb.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-web-api</artifactId>
+            <version>6.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.tanesha.recaptcha4j</groupId>
+            <artifactId>recaptcha4j</artifactId>
+            <version>0.0.7</version>
+        </dependency>
+
+
 
 
     </dependencies>

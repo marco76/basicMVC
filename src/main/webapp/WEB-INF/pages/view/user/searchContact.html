@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+        >
+
+<head th:include="templates/layout :: headerFragment">
+</head>
+
+<body>
+
+
+
+<div th:include="templates/layout :: menuFragment">
+</div>
+<div class="container">
+    <form class="form-search">
+        <legend>Search a contact</legend>
+        <div class="input-append">
+            <input type="text" class="span2 search-query" id="contact" placeholder="username ..."/>
+            <button type="submit" class="btn">Select</button>
+
+        </div>
+    </form>
+</div>
+<div th:include="templates/layout :: footerFragment">
+
+</div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    $(function() {
+
+        $("#contact").autocomplete({
+            source: /*[[@{/user/get_contacts_list}]]*/ '',
+            minLength: 2
+        })});
+
+
+    /*]]>*/
+</script>
+</body>
+
+</html>
