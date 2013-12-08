@@ -20,7 +20,7 @@ import java.util.Properties;
 
 @EnableTransactionManagement
 @Configuration
-@Profile("dev")
+@Profile("default")
 public class StandaloneDataConfig implements DisposableBean {
 
     private EmbeddedDatabase ed;

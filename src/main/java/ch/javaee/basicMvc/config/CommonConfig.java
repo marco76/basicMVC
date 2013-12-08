@@ -12,7 +12,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.ui.velocity.VelocityEngineFactoryBean;
 
 @Configuration
-@PropertySource("classpath:mail_dev.properties")
+@PropertySource("classpath:${ENV:dev}/mail.properties")
 public class CommonConfig {
     @Value("${mail.subject}")
     private String mailSubject;
@@ -38,8 +38,8 @@ public class CommonConfig {
     private String mailSmtpStartTlsEnable;
 
     @Bean
-    JavaMailSender javaMailSender(){
-       JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
+    JavaMailSender javaMailSender() {
+        JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
         javaMailSender.setPort(Integer.parseInt(mailSmtpPort));
         javaMailSender.setHost(mailSmtpHost);
         javaMailSender.setUsername(mailSmtpUsername);
@@ -53,19 +53,19 @@ public class CommonConfig {
     }
 
     @Bean
-    VelocityEngineFactoryBean velocityEngine(){
+    VelocityEngineFactoryBean velocityEngine() {
         VelocityEngineFactoryBean velocityEngine = new VelocityEngineFactoryBean();
         velocityEngine.setResourceLoaderPath("classpath:/mail/templates");
         return velocityEngine;
     }
 
     @Bean
-    MyUserDetailsService myUserDetailsService(){
+    MyUserDetailsService myUserDetailsService() {
         return new MyUserDetailsService();
     }
 
     @Bean
-    MailBean mailBean(){
+    MailBean mailBean() {
         MailBean mailBean = new MailBean();
         mailBean.setHost(mailHost);
         mailBean.setSubject(mailSubject);

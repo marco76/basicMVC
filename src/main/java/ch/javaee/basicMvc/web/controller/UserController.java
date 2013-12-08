@@ -11,10 +11,14 @@ import ch.javaee.basicMvc.utility.SecureUtility;
 import ch.javaee.basicMvc.utility.TypeActivationEnum;
 import ch.javaee.basicMvc.web.component.UserSessionComponent;
 import ch.javaee.basicMvc.web.form.UserForm;
+import net.tanesha.recaptcha.ReCaptchaImpl;
+import net.tanesha.recaptcha.ReCaptchaResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.GrantedAuthorityImpl;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,11 +29,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletRequest;
 import javax.validation.Valid;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class UserController {
@@ -47,6 +49,12 @@ public class UserController {
     UserDetailsService myUserDetailsService;
     @Autowired
     private UserSessionComponent userSessionComponent;
+    @Autowired
+    private ReCaptchaImpl reCaptcha;
+
+    private static List<GrantedAuthority> AUTHORITIES = new ArrayList<GrantedAuthority>(1) {{
+        add(new GrantedAuthorityImpl("ROLE_USER"));
+    }};
 
 
     public void setMyUserDetailsService(MyUserDetailsService myUserDetailsService) {
@@ -55,19 +63,32 @@ public class UserController {
 
     @RequestMapping("/public/signup")
     public String create(Model model) {
-        model.addAttribute("user", new UserForm());
-
+        if (!model.containsAttribute("user")) {
+            model.addAttribute("user", new UserForm());
+        }
+        if (reCaptcha != null) {
+            model.addAttribute("recaptcha", reCaptcha.createRecaptchaHtml(null, null));
+        }
         return "view/public/signup";
     }
 
+
     @RequestMapping(value = "/public/signup_confirm", method = RequestMethod.POST)
     @Transactional
-    public String createUser(@ModelAttribute("user") @Valid UserForm form, BindingResult result) {
+    public String createUser(Model model, @ModelAttribute("user") @Valid UserForm form, BindingResult result, @RequestParam(value = "recaptcha_challenge_field", required = false) String challangeField,
+                             @RequestParam(value = "recaptcha_response_field", required = false) String responseField, ServletRequest servletRequest) {
+
+        String remoteAdress = servletRequest.getRemoteAddr();
+        if (reCaptcha != null) {
+            ReCaptchaResponse reCaptchaResponse = reCaptcha.checkAnswer(remoteAdress, challangeField, responseField);
+            if (!reCaptchaResponse.isValid()) {
+                this.create(model);
+                return "view/public/signup";
+            }
+        }
         if (!result.hasErrors()) {
-
-
             // check if email already exists
-            if (userRepository.isEmailAlreadyExists(form.getEmail())){
+            if (userRepository.isEmailAlreadyExists(form.getEmail())) {
                 FieldError fieldError = new FieldError("user", "email", "email already exists");
                 result.addError(fieldError);
                 return "view/public/signup";
@@ -96,14 +117,14 @@ public class UserController {
             mailSenderService.sendAuthorizationMail(user, user.getSecurityCode());
 
 
-
         } else {
 
+            this.create(model);
             return "view/public/signup";
 
         }
 
-        return "redirect:/login";
+        return "view/public/mailSent";
     }
 
     @RequestMapping(value = "/user/profile")
@@ -142,8 +163,8 @@ public class UserController {
 
     @RequestMapping(value = "/public/activation", method = RequestMethod.GET)
     @Transactional
-    public String activation(@RequestParam String mail, @RequestParam String code ){
-        if (userRepository.isSecurityCodeValid(mail, code)){
+    public String activation(@RequestParam String mail, @RequestParam String code) {
+        if (userRepository.isSecurityCodeValid(mail, code)) {
             User user = userRepository.findUserByEmail(mail);
             user.setEnabled(true);
 
@@ -152,7 +173,7 @@ public class UserController {
             userRepository.update(user);
             UserDetails userDetails = myUserDetailsService.loadUserByUsername(user.getEmail());
 
-            Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, user.getPassword());
+            Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, user.getPassword(), AUTHORITIES);
             SecurityContextHolder.getContext().setAuthentication(auth);
             userSessionComponent.setCurrentUser(user);
 
@@ -161,9 +182,6 @@ public class UserController {
         return "view/error/error";
 
     }
-
-
-
 
 
 }

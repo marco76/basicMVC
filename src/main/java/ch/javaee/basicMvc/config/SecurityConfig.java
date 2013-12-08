@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
+import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 @Configuration
@@ -38,6 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * We don't check the credentials for the static content
+     *
      * @param web
      * @throws Exception
      */
@@ -49,7 +51,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /**
-     *
      * @param http
      * @throws Exception
      */
@@ -60,29 +61,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/users**", "/sessions/**").hasRole("ADMIN") //
                 // everybody can access the main page ("/") and the signup page ("/signup")
-                .antMatchers("/assets/**", "/", "/login", "/signup", "/public/**").permitAll().anyRequest().hasRole("USER") 
+                .antMatchers("/assets/**", "/", "/login", "/signup", "/public/**").permitAll().anyRequest().hasRole("USER")
 
         ;
         FormLoginConfigurer formLoginConfigurer = http.formLogin();
         formLoginConfigurer.loginPage("/login").failureUrl("/login/failure").defaultSuccessUrl("/login/success").permitAll();
+        LogoutConfigurer logoutConfigurer = http.logout();
+        logoutConfigurer.logoutUrl("/logout").logoutSuccessUrl("/logout/success");
     }
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider(){
+    public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-         authenticationProvider.setPasswordEncoder(passwordEncoder());
-         authenticationProvider.setSaltSource(reflectionSaltSource());
-         authenticationProvider.setUserDetailsService(myUserDetailsService);
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
+        authenticationProvider.setSaltSource(reflectionSaltSource());
+        authenticationProvider.setUserDetailsService(myUserDetailsService);
 
-       return authenticationProvider;
+        return authenticationProvider;
 
-      }
+    }
+
     @Bean
-    public Md5PasswordEncoder passwordEncoder(){
+    public Md5PasswordEncoder passwordEncoder() {
         return new Md5PasswordEncoder();
     }
+
     @Bean
-    public ReflectionSaltSource reflectionSaltSource(){
+    public ReflectionSaltSource reflectionSaltSource() {
         ReflectionSaltSource reflectionSaltSource = new ReflectionSaltSource();
         reflectionSaltSource.setUserPropertyToUse("username");
         return reflectionSaltSource;
