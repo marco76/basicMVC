@@ -1,2 +1,3 @@
-.idea
-src/main/resources/marco/
+.idea/*
+src/main/resources/marco/*
+target/*
