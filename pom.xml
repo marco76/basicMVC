@@ -12,6 +12,7 @@
         <hibernate.version>4.1.9.Final</hibernate.version>
         <hsqldb.version>2.2.8</hsqldb.version>
         <logback.version>1.0.13</logback.version>
+        <jetty.version>9.1.0.v20131115</jetty.version>
     </properties>
 
     <dependencies>
@@ -138,6 +139,24 @@
             <version>${logback.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+            <version>${jetty.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-webapp</artifactId>
+            <version>${jetty.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>
@@ -166,6 +185,10 @@
                         </configuration>
                     </plugin>
 
+            <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+            </plugin>
         </plugins>
 
     </build>
