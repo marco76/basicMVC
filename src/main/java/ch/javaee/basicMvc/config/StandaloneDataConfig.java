@@ -1,5 +1,7 @@
 package ch.javaee.basicMvc.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,24 +24,24 @@ import java.util.Properties;
 @Configuration
 @Profile("default")
 public class StandaloneDataConfig implements DisposableBean {
+    static final Logger logger = LoggerFactory.getLogger(CommonConfig.class);
 
     private EmbeddedDatabase ed;
 
     @Bean(name="hsqlInMemory")
     public EmbeddedDatabase hsqlInMemory() {
-
+        logger.debug("Enter: EmbeddedDatabase");
         if ( this.ed == null ) {
             EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
             this.ed = builder.setType(EmbeddedDatabaseType.HSQL).build();
         }
-
+        logger.debug("Exit: EmbeddedDatabase");
         return this.ed;
 
     }
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(){
-
 
 
         LocalContainerEntityManagerFactoryBean lcemfb

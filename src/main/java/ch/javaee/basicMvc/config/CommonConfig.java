@@ -2,6 +2,8 @@ package ch.javaee.basicMvc.config;
 
 import ch.javaee.basicMvc.bean.MailBean;
 import ch.javaee.basicMvc.service.MyUserDetailsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +16,9 @@ import org.springframework.ui.velocity.VelocityEngineFactoryBean;
 @Configuration
 @PropertySource("classpath:${ENV:dev}/mail.properties")
 public class CommonConfig {
+
+    static final Logger logger = LoggerFactory.getLogger(CommonConfig.class);
+
     @Value("${mail.subject}")
     private String mailSubject;
     @Value("${mail.from}")
@@ -39,6 +44,7 @@ public class CommonConfig {
 
     @Bean
     JavaMailSender javaMailSender() {
+        logger.debug("Enter: javaMailSender");
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
         javaMailSender.setPort(Integer.parseInt(mailSmtpPort));
         javaMailSender.setHost(mailSmtpHost);
@@ -48,7 +54,7 @@ public class CommonConfig {
         javaMailSender.getJavaMailProperties().setProperty("mail.smtp.auth", mailSmtpAuth);
         javaMailSender.getJavaMailProperties().setProperty("mail.smtp.starttls.enable", mailSmtpStartTlsEnable);
 
-
+        logger.debug("Exit: javaMailSender");
         return javaMailSender;
     }
 

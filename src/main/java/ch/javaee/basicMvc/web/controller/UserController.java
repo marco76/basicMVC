@@ -13,6 +13,8 @@ import ch.javaee.basicMvc.web.component.UserSessionComponent;
 import ch.javaee.basicMvc.web.form.UserForm;
 import net.tanesha.recaptcha.ReCaptchaImpl;
 import net.tanesha.recaptcha.ReCaptchaResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
@@ -35,6 +37,9 @@ import java.util.*;
 
 @Controller
 public class UserController {
+
+    static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
 
     @Autowired
     UserRepository userRepository;
@@ -63,9 +68,11 @@ public class UserController {
 
     @RequestMapping("/public/signup")
     public String create(Model model) {
+        logger.debug("Enter: create");
         if (!model.containsAttribute("user")) {
             model.addAttribute("user", new UserForm());
         }
+        logger.debug("Check: reCaptcha {}", reCaptcha != null);
         if (reCaptcha != null) {
             model.addAttribute("recaptcha", reCaptcha.createRecaptchaHtml(null, null));
         }
@@ -77,9 +84,9 @@ public class UserController {
     @Transactional
     public String createUser(Model model, @ModelAttribute("user") @Valid UserForm form, BindingResult result, @RequestParam(value = "recaptcha_challenge_field", required = false) String challangeField,
                              @RequestParam(value = "recaptcha_response_field", required = false) String responseField, ServletRequest servletRequest) {
-
-        String remoteAdress = servletRequest.getRemoteAddr();
+        logger.debug("Enter: createUser");
         if (reCaptcha != null) {
+            String remoteAdress = servletRequest.getRemoteAddr();
             ReCaptchaResponse reCaptchaResponse = reCaptcha.checkAnswer(remoteAdress, challangeField, responseField);
             if (!reCaptchaResponse.isValid()) {
                 this.create(model);
@@ -87,6 +94,7 @@ public class UserController {
             }
         }
         if (!result.hasErrors()) {
+
             // check if email already exists
             if (userRepository.isEmailAlreadyExists(form.getEmail())) {
                 FieldError fieldError = new FieldError("user", "email", "email already exists");
@@ -118,12 +126,12 @@ public class UserController {
 
 
         } else {
-
+            logger.debug("signup error");
             this.create(model);
             return "view/public/signup";
 
         }
-
+        logger.debug("Exit: createUser");
         return "view/public/mailSent";
     }
 
@@ -164,6 +172,7 @@ public class UserController {
     @RequestMapping(value = "/public/activation", method = RequestMethod.GET)
     @Transactional
     public String activation(@RequestParam String mail, @RequestParam String code) {
+        logger.debug("Enter: activation");
         if (userRepository.isSecurityCodeValid(mail, code)) {
             User user = userRepository.findUserByEmail(mail);
             user.setEnabled(true);
@@ -176,9 +185,10 @@ public class UserController {
             Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, user.getPassword(), AUTHORITIES);
             SecurityContextHolder.getContext().setAuthentication(auth);
             userSessionComponent.setCurrentUser(user);
-
+            logger.debug("Exit: activation");
             return "view/user/profile";
         }
+        logger.debug("Exit: activation");
         return "view/error/error";
 
     }
