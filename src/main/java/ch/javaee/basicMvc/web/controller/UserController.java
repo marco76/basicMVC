@@ -40,7 +40,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.GrantedAuthorityImpl;
+
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -78,7 +79,7 @@ public class UserController {
     private ReCaptchaImpl reCaptcha;
 
     private static List<GrantedAuthority> AUTHORITIES = new ArrayList<GrantedAuthority>(1) {{
-        add(new GrantedAuthorityImpl("ROLE_USER"));
+        add(new SimpleGrantedAuthority("ROLE_USER"));
     }};
 
 

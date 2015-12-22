@@ -22,6 +22,7 @@ package ch.javaee.basicMvc.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -45,6 +46,11 @@ public class SchedulingConfig implements AsyncConfigurer {
         executor.initialize();
         logger.debug("Exit: getAsynchExecutor");
         return executor;
+    }
+
+    @Override
+    public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
+        return null;
     }
 
 }
