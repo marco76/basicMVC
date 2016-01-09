@@ -44,7 +44,7 @@ import java.util.Properties;
 @Configuration
 @Profile("default")
 public class StandaloneDataConfig implements DisposableBean {
-    static final Logger logger = LoggerFactory.getLogger(CommonConfig.class);
+    static final Logger logger = LoggerFactory.getLogger(StandaloneDataConfig.class);
 
     private EmbeddedDatabase ed;
 
@@ -68,7 +68,7 @@ public class StandaloneDataConfig implements DisposableBean {
                 = new LocalContainerEntityManagerFactoryBean();
 
         lcemfb.setDataSource(this.hsqlInMemory());
-        lcemfb.setPackagesToScan(new String[] {"ch.javaee.basicMvcAng.domain"});
+        lcemfb.setPackagesToScan("ch.javaee.basicMvcAng.domain");
 
         lcemfb.setPersistenceUnitName("MyPU");
 
