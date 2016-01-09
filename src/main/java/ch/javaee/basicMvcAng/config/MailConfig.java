@@ -35,9 +35,9 @@ import org.springframework.ui.velocity.VelocityEngineFactoryBean;
 
 @Configuration
 @PropertySource("classpath:${ENV:dev}/mail.properties")
-public class CommonConfig {
+public class MailConfig {
 
-    static final Logger logger = LoggerFactory.getLogger(CommonConfig.class);
+    static final Logger logger = LoggerFactory.getLogger(MailConfig.class);
 
     @Value("${mail.subject}")
     private String mailSubject;
